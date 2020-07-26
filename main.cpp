@@ -138,15 +138,15 @@ public:
     }
     void line(const Line& l)
     {
-        UINT x0, y0, x1, y1;
+        INT x0, y0, x1, y1;
 
         double zoom0 = double(1) + double(l.p[0].z) / R0;
         double zoom1 = double(1) + double(l.p[1].z) / R0;
 
-        UINT xGap0 = W_WIDTH * UINT((1 - 1 / zoom0) / 2);
-        UINT yGap0 = W_HEIGHT * UINT((1 - 1 / zoom0) / 2);
-        UINT xGap1 = W_WIDTH * UINT((1 - 1 / zoom1) / 2);
-        UINT yGap1 = W_HEIGHT * UINT((1 - 1 / zoom1) / 2);
+        INT xGap0 = W_WIDTH * INT((1 - 1 / zoom0) / 2) + W_WIDTH / 2;
+        INT yGap0 = W_HEIGHT * INT((1 - 1 / zoom0) / 2) + W_HEIGHT / 2;
+        INT xGap1 = W_WIDTH * INT((1 - 1 / zoom1) / 2) + W_WIDTH / 2;
+        INT yGap1 = W_HEIGHT * INT((1 - 1 / zoom1) / 2) + W_HEIGHT / 2;
 
         x0 = xGap0 + l.p[0].x / zoom0;
         y0 = yGap0 + l.p[0].y / zoom0;
@@ -156,8 +156,8 @@ public:
 
         INT dx = x0 - x1;
         INT dy = y0 - y1;
-        UINT begY;
-        UINT minX;
+        INT begY;
+        INT minX;
 
         double tan = (double)dy / (double)dx;
         if (abs(tan) <= 1)
@@ -196,7 +196,7 @@ public:
             for (UINT y = 0; y < dy; ++y)
             {
                 //SetPixel(hdc, minX + y / tan, begY + y, l.color);
-                matrix.setPixel(minX + UINT(y / tan), begY + y, l.color);
+                matrix.setPixel(minX + INT(y / tan), begY + y, l.color);
             }
         }
     }
@@ -457,8 +457,6 @@ int main()
             DeleteDC(hdcbmp);*/
 
             //SetDIBitsToDevice(mainwindow.hdc, 0, 0, W_WIDTH, W_HEIGHT, )
-
-
 
             /*hDC = BeginPaint(mainwindow.hwnd, &ps);
             hMemDC = CreateCompatibleDC(hDC);
