@@ -12,8 +12,6 @@
 #define SQRT_2 1.41421356
 #define TG_80deg 1.3962634
 
-#define W_HEIGHT 600
-#define W_WIDTH 800
 #define X_CENTER W_WIDTH / 2
 #define Y_CENTER W_HEIGHT / 2
 
