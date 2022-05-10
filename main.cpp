@@ -1,10 +1,13 @@
 #include <windows.h>
+#include <winuser.h>
 #include <wincon.h>
 #include <iostream>
 #include <vector>
 #include <thread>
 //#include <gdiplus.h>
 //#include <gdiplusbitmap.h>
+
+#include "Constants.h"
 
 #define SQRT_2 1.41421356
 #define TG_80deg 1.3962634
@@ -129,7 +132,7 @@ class Draw
 public:
     HDC hdc;
     Matrix matrix;
-    vector<thread*> tds;
+    //vector<thread*> tds;
 public:
     Draw(HDC& _hdc)//, Matrix& m)
     {
@@ -294,9 +297,9 @@ public:
     HDC hdc;
     MainWindow()
     {
-        hwnd = CreateWindowEx(0, WC_DIALOG, L"Main Window", WS_VISIBLE | WS_SYSMENU,
+        hwnd = CreateWindowEx(0, WC_DIALOG, "Main Window", WS_VISIBLE | WS_SYSMENU,
             CW_USEDEFAULT, CW_USEDEFAULT, W_WIDTH, W_HEIGHT, 0, 0, 0, 0);
-        SetWindowLong(hwnd, DWL_DLGPROC, (long)mainProc);
+        SetWindowLong(hwnd, 4, (LRESULT)mainProc);
 
         hdc = GetDC(hwnd);
     }
@@ -328,22 +331,22 @@ int main()
 
 
     RGBQUAD someClr = { 200, 200, 100 };
-    Figure cube = { Triangle({100, 100, 100}, {100, 200, 100}, {200, 200, 100}, someClr),//перед
+    Figure cube = { Triangle({100, 100, 100}, {100, 200, 100}, {200, 200, 100}, someClr),//пїЅпїЅпїЅпїЅпїЅ
                     Triangle({100, 100, 100}, {200, 100, 100}, {200, 200, 100}, someClr),
 
-                    Triangle({100, 100, 200}, {100, 200, 200}, {200, 200, 200}, someClr),//зад
+                    Triangle({100, 100, 200}, {100, 200, 200}, {200, 200, 200}, someClr),//пїЅпїЅпїЅ
                     Triangle({100, 100, 200}, {200, 100, 200}, {200, 200, 200}, someClr),
 
-                    Triangle({100, 100, 100}, {100, 100, 200}, {100, 200, 200}, someClr),//лево
+                    Triangle({100, 100, 100}, {100, 100, 200}, {100, 200, 200}, someClr),//пїЅпїЅпїЅпїЅ
                     Triangle({100, 100, 100}, {100, 200, 100}, {100, 200, 200}, someClr),
 
-                    Triangle({200, 100, 100}, {200, 100, 200}, {200, 200, 200}, someClr),//право
+                    Triangle({200, 100, 100}, {200, 100, 200}, {200, 200, 200}, someClr),//пїЅпїЅпїЅпїЅпїЅ
                     Triangle({200, 100, 100}, {200, 200, 100}, {200, 200, 200}, someClr),
 
-                    Triangle({100, 100, 100}, {200, 100, 100}, {100, 100, 200}, someClr),//верх
+                    Triangle({100, 100, 100}, {200, 100, 100}, {100, 100, 200}, someClr),//пїЅпїЅпїЅпїЅ
                     Triangle({100, 100, 200}, {200, 100, 200}, {200, 100, 100}, someClr),
 
-                    Triangle({100, 200, 100}, {200, 200, 100}, {100, 200, 200}, someClr),//низ
+                    Triangle({100, 200, 100}, {200, 200, 100}, {100, 200, 200}, someClr),//пїЅпїЅпїЅ
                     Triangle({100, 200, 200}, {200, 200, 200}, {200, 200, 100}, someClr) };
     Line line({ 0, 0, 200 }, { 400, 400, 0 }, BLACK);
     //draw.line(line);
@@ -484,11 +487,11 @@ int main()
         GetClientRect(mainwindow.hwnd, &rect);
         auto hdc = BeginPaint(mainwindow.hwnd, &ps);
         SetBkColor(hdc, 0xEECCCC);
-        // Создание нового контекста для двойной буфферизации
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         auto hCmpDC = CreateCompatibleDC(hdc);
         auto hBmp = CreateCompatibleBitmap(hdc, W_WIDTH, W_HEIGHT);
         SelectObject(hCmpDC, hBmp);
-        // Закраска фоновым цветом
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         LOGBRUSH br;
         br.lbStyle = BS_SOLID;
         br.lbColor = 0xEECCCC;
@@ -496,9 +499,9 @@ int main()
         brush = CreateBrushIndirect(&br);
         FillRect(hCmpDC, &rect, brush);
         DeleteObject(brush);
-        // Рисование
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         SetDIBitsToDevice(mainwindow.hdc, 0, 0, W_WIDTH, W_HEIGHT, 0, 0, 0, W_HEIGHT, draw.matrix.p, &bif, DIB_PAL_COLORS);
-        // Вывод на экран
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         SetStretchBltMode(hdc, COLORONCOLOR);
         BitBlt(hdc, 0, 0, W_WIDTH, W_HEIGHT,
             hCmpDC, 0, 0, SRCCOPY);
